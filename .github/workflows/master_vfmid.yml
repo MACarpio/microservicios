@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'VFmid'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5379C69365DC430BA1500C7992CB9BC3 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DC74110DD09B4B3889D8F3D751BCD075 }}
           package: .

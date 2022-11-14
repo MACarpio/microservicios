@@ -11,5 +11,6 @@ namespace ms.Context.SqlServer
         public DbSet<md_busquedas> md_busquedas { get; set; }
         public DbSet<md_turno_instalacion> md_turno_instalacion { get; set; }
         public DbSet<md_sv> md_sv { get; set; }
+        public DbSet<md_CRM_DIRECCION> md_crm_direccion { get; set; }
     }
 }

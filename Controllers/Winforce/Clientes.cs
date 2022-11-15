@@ -46,12 +46,6 @@ namespace ms.Controllers.Winforce
             var cli = _contextWinforce.tp_clientes.FromSqlRaw("SELECT * FROM tp_clientes WHERE cli_num_doc = {0}", documento);
             return cli.FirstOrDefaultAsync();
         }
-        [HttpGet("Cliente")]
-        public ActionResult<Task<tp_clientes>> GetClientes()
-        {
-            var cli = _contextWinforce.tp_clientes.FromSqlRaw("SELECT * FROM tp_clientes TOP 10");
-            return Ok(cli.ToListAsync());
-        }
 
         [NonAction]
         public void RegistrarLead(string motivo, ModelBusqueda lead, tp_clientes cliente)

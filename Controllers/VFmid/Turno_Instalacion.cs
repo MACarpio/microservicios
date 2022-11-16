@@ -58,13 +58,12 @@ namespace ms.Controllers.VFmid
         }
 
         [HttpGet("GetTurnoInstalacion")]
-        public ActionResult<string> GetTurnoInstalacion(string fecha, string distrito, int flag)
+        public ActionResult<string> GetTurnoInstalacion(DateTime dateTime, string distrito, int flag)
         {
-            DateTime horaPeticion = DateTime.Now;
+            DateTime fechaPeticion = DateTime.Now;
             TimeZoneInfo Peru = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
-            var hoy = TimeZoneInfo.ConvertTime(horaPeticion, Peru, TimeZoneInfo.Local);
+            DateTime hoy = TimeZoneInfo.ConvertTime(fechaPeticion, TimeZoneInfo.Local, Peru);
             var tr_instalacion = _dbmid.md_turno_instalacion.FirstAsync(x => x.Distrito == distrito);
-            DateTime dateTime = DateTime.Parse(fecha);
             if (tr_instalacion.Result.Tr_noche == "")
             {
                 tr_instalacion.Result.Tr_noche = "No Disponible";
@@ -81,7 +80,7 @@ namespace ms.Controllers.VFmid
             {
                 if (flag == 0)
                 {
-                    if (fecha == DateOnly.FromDateTime(hoy).ToString())
+                    if (DateOnly.FromDateTime(dateTime) == DateOnly.FromDateTime(hoy))
                     {
                         if (hoy.Hour >= 0 && hoy.Hour < 6)
                         {
@@ -126,7 +125,7 @@ namespace ms.Controllers.VFmid
                 }
                 else
                 {
-                    return NotFound("Flag Solo Acepta 0 o 1");
+                    return NotFound(new { error = "Flag Solo Acepta 0 o 1", time = hoy });
                 }
             }
 

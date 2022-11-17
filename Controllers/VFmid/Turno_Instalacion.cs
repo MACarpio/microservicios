@@ -58,29 +58,28 @@ namespace ms.Controllers.VFmid
         }
 
         [HttpGet("GetTurnoInstalacion")]
-        public ActionResult<string> GetTurnoInstalacion(DateTime dateTime, string distrito, int flag)
+        public ActionResult<string> GetTurnoInstalacion(DateTime Fecha, string Distrito, int Flag)
         {
             DateTime fechaPeticion = DateTime.Now;
-            TimeZoneInfo Peru = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
-            DateTime hoy = TimeZoneInfo.ConvertTime(fechaPeticion, TimeZoneInfo.Local, Peru);
-            var tr_instalacion = _dbmid.md_turno_instalacion.FirstAsync(x => x.Distrito == distrito);
+            DateTime hoy = TimeZoneInfo.ConvertTime(fechaPeticion, TimeZoneInfo.Local, TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time"));
+            var tr_instalacion = _dbmid.md_turno_instalacion.FirstAsync(x => x.Distrito == Distrito);
             if (tr_instalacion.Result.Tr_noche == "")
             {
                 tr_instalacion.Result.Tr_noche = "No Disponible";
             }
             if (tr_instalacion.Result == null)
             {
-                return NotFound("No se encontró el distrito");
+                return NotFound(new { error = "No se encontró el distrito" });
             }
-            if (DateOnly.FromDateTime(dateTime) < DateOnly.FromDateTime(hoy))
+            if (DateOnly.FromDateTime(Fecha) < DateOnly.FromDateTime(hoy))
             {
-                return NotFound("No se puede agendar en fechas pasadas");
+                return NotFound(new { error = "No se puede agendar en fechas pasadas" });
             }
             else
             {
-                if (flag == 0)
+                if (Flag == 0)
                 {
-                    if (DateOnly.FromDateTime(dateTime) == DateOnly.FromDateTime(hoy))
+                    if (DateOnly.FromDateTime(Fecha) == DateOnly.FromDateTime(hoy))
                     {
                         if (hoy.Hour >= 0 && hoy.Hour < 6)
                         {
@@ -111,11 +110,11 @@ namespace ms.Controllers.VFmid
                         return Ok(new { tr_mañana = tr_instalacion.Result.Tr_mañana, tr_tarde = tr_instalacion.Result.Tr_tarde, tr_noche = tr_instalacion.Result.Tr_noche });
                     }
                 }
-                if (flag == 1)
+                if (Flag == 1)
                 {
-                    if (DateOnly.FromDateTime(dateTime) <= DateOnly.FromDateTime(hoy.AddDays(2)))
+                    if (DateOnly.FromDateTime(Fecha) <= DateOnly.FromDateTime(hoy.AddDays(2)))
                     {
-                        return Ok(new { message = "No se puede agendar antes de los 2 dias" });
+                        return Ok(new { error = "No se puede agendar antes de los 2 dias" });
                     }
                     else
                     {

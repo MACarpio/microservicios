@@ -39,11 +39,11 @@ namespace ms.Models.VFmid
     }
     public partial class ModelCrmDireccion
     {
-        public string DIRC_COD_TIPO_VIA { get; set; } = null!;
-        public string DIRV_DESCRIPCION_VIA { get; set; } = null!;
-        public string DIRV_DESCRIPCION_NUMERACION { get; set; } = null!;
-        public string DIRV_MANZANA { get; set; } = null!;
-        public string DIRV_LOTE { get; set; } = null!;
+        public string TIPO_VIA { get; set; } = null!;
+        public string DESCRIPCION_VIA { get; set; } = null!;
+        public string DESCRIPCION_NUMERACION { get; set; } = null!;
+        public string MANZANA { get; set; } = null!;
+        public string LOTE { get; set; } = null!;
 
     }
 }

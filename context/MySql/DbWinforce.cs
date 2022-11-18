@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using ms.Models.Winforce;
 namespace ms.Context.MySql
 {
     public class DbWinforce : DbContext
@@ -8,6 +7,6 @@ namespace ms.Context.MySql
         {
         }
 
-        public DbSet<tp_clientes> tp_clientes { get; set; }
+
     }
 }

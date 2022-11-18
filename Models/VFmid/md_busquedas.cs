@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ms.Models.Winforce;
 
 namespace ms.Models.VFmid
 {
@@ -33,12 +32,11 @@ namespace ms.Models.VFmid
     {
         public ModelGeofinder? geofinder { get; set; }
         public string? direccion { get; set; }
-        public tp_clientes? cliente { get; set; }
+        public modelCliente? cliente { get; set; }
         public string? torre { get; set; }
         public string? bloque { get; set; }
         public int? tipo_interes_Id { get; set; }
         public int? vendedorId { get; set; }
-        public string? observaciones { get; set; }
         public int pasoWeb { get; set; }
     }
     [NotMapped]

@@ -14,19 +14,6 @@ namespace ms.Controllers.VFmid
             _dbmid = dbmid;
         }
 
-        // [HttpGet]
-        // public ActionResult<IEnumerable<md_CRM_DIRECCION>> Get()
-        // {
-        //     return Ok(_dbmid.md_CRM_DIRECCION.ToList());
-        // }
-        // [HttpPost]
-        // public void Post([FromBody] md_CRM_DIRECCION model)
-        // {
-        //     _dbmid.md_CRM_DIRECCION.Add(model);
-        //     _dbmid.SaveChanges();
-        // }
-
-
         [HttpGet("ValidarFlag")]
         public ActionResult<IEnumerable<md_CRM_DIRECCION>> GetFlag(string TIPO_VIA, string DESCRIPCION_VIA, string DESCRIPCION_NUMERACION, string MANZANA, string LOTE)
         {

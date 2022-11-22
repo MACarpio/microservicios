@@ -17,9 +17,10 @@ namespace ms.Controllers.VFmid
         public ActionResult<string> Get(string doc)
         {
             var result = _dbmid.tp_score_v1.Where(x => x.dni == doc).FirstOrDefault();
+
             if (result == null)
             {
-                return NotFound(new { message = "No se encontró el documento" });
+                return NotFound(new { message = "No se encontró el documento", datos = result });
             }
             if ((result.score / 100) >= 0.8)
             {
@@ -31,5 +32,7 @@ namespace ms.Controllers.VFmid
             }
         }
 
+
     }
+
 }

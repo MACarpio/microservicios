@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\VFConsulting\\ms\\ms.csproj": {}
+    "E:\\VFConsulting\\ms\\ms.csproj": {}
   },
   "projects": {
-    "e:\\VFConsulting\\ms\\ms.csproj": {
+    "E:\\VFConsulting\\ms\\ms.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\VFConsulting\\ms\\ms.csproj",
+        "projectUniqueName": "E:\\VFConsulting\\ms\\ms.csproj",
         "projectName": "ms",
-        "projectPath": "e:\\VFConsulting\\ms\\ms.csproj",
+        "projectPath": "E:\\VFConsulting\\ms\\ms.csproj",
         "packagesPath": "C:\\Users\\mpaca\\.nuget\\packages\\",
-        "outputPath": "e:\\VFConsulting\\ms\\obj\\",
+        "outputPath": "E:\\VFConsulting\\ms\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mpaca\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -13,11 +13,14 @@ namespace ms.Controllers.VFmid
             _dbmid = dbmid;
         }
 
-        [HttpGet("")]
-        public ActionResult<string> Get(string doc)
+        [HttpGet]
+        public ActionResult<string> Get(string? doc = null)
         {
+            if (doc == null)
+            {
+                return NotFound(new { message = "Documento requerido", datos = doc });
+            }
             var result = _dbmid.tp_score_v1.Where(x => x.dni == doc).FirstOrDefault();
-
             if (result == null)
             {
                 return NotFound(new { message = "No se encontró el documento", datos = result });

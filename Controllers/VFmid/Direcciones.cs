@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using ms.Models.VFmid;
 using ms.Context.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace ms.Controllers.VFmid
 {
@@ -9,20 +9,72 @@ namespace ms.Controllers.VFmid
     public class Direcciones : ControllerBase
     {
         private readonly DbVFmid _dbmid;
-        public Direcciones(DbVFmid dbmid)
+        private readonly DbCRM _dbcrm;
+        public Direcciones(DbVFmid dbmid, DbCRM dbcrm)
         {
             _dbmid = dbmid;
+            _dbcrm = dbcrm;
         }
 
         [HttpGet("ValidarFlag")]
-        public ActionResult<IEnumerable<md_CRM_DIRECCION>> GetFlag(string TIPO_VIA, string DESCRIPCION_VIA, string DESCRIPCION_NUMERACION, string MANZANA, string LOTE)
+        public ActionResult<IEnumerable<String>> GetFlag(string TipoVia, string DescVia, string Numeracion, string Manzana, string Lote, string DescNivel, string DescInmueble)
         {
-            var result = _dbmid.md_CRM_DIRECCION.Where(x => x.DIRC_COD_TIPO_VIA == TIPO_VIA && x.DIRV_DESCRIPCION_VIA == DESCRIPCION_VIA && x.DIRV_DESCRIPCION_NUMERACION == DESCRIPCION_NUMERACION && x.DIRV_MANZANA == MANZANA && x.DIRV_LOTE == LOTE);
-            if (result.Count() == 0)
+            var cli = _dbcrm.query.FromSqlRaw("SELECT DISTINCT cd.DOCI_COD_DOCUMENTO ,cc.CLIV_NUMERO_DOCUMENTO ,cd.DOCC_COD_TIPO_ESTADO ,cd.DOCC_COD_TIPO_SUB_ESTADO FROM CRM.CRM_DOCUMENTO cd inner join CRM.CRM_CLIENTE_DIRECCION ccd on cd.DOCI_COD_CLIENTE = ccd.RCDI_COD_CLIENTE inner join CRM.CRM_CLIENTE cc on ccd.RCDI_COD_CLIENTE = cc.CLII_COD_CLIENTE inner join CRM.CRM_DIRECCION cd2 on ccd.RCDI_COD_DIRECCION =cd2.DIRI_COD_DIRECCION where cd2.DIRC_COD_TIPO_VIA = {0} AND cd2.DIRV_DESCRIPCION_VIA = {1} AND cd2.DIRV_DESCRIPCION_NUMERACION = {2} AND cd2.DIRV_MANZANA = {3} AND cd2.DIRV_LOTE = {4} and cd2.DIRV_DESCRIPCION_NIVEL = {5} and cd2.DIRV_DESCRIPCION_INMUEBLE = {6}", TipoVia, DescVia, Numeracion, Manzana, Lote, DescNivel, DescInmueble).ToList();
+            if (cli.Count == 0)
             {
-                return Ok(new { flag = 0 });
+                return Ok(new { flag = 0, data = cli });
             }
-            return Ok(new { flag = 1 });
+            else
+            {
+                int susDueda = 0;
+                int susAPC = 0;
+                int bajaAPC = 0;
+                int bajaFraude = 0;
+                int serActivo = 0;
+                for (int i = 0; i < cli.Count; i++)
+                {
+                    if (cli[i].DOCC_COD_TIPO_ESTADO == "03")
+                    {
+                        serActivo++;
+                    }
+                    if (cli[i].DOCC_COD_TIPO_ESTADO == "07" || cli[i].DOCC_COD_TIPO_ESTADO == "06")
+                    {
+                        //Validar Dueda, Sus-APC, Baja-APC o Baja-Fraude
+
+                        if (cli[i].DOCC_COD_TIPO_SUB_ESTADO == null)
+                        {
+                            susDueda++;
+                        }
+                        if (cli[i].DOCC_COD_TIPO_SUB_ESTADO == "01")
+                        {
+                            susAPC++;
+                        }
+                        if (cli[i].DOCC_COD_TIPO_SUB_ESTADO == "02")
+                        {
+                            bajaAPC++;
+                        }
+                        if (cli[i].DOCC_COD_TIPO_SUB_ESTADO == "03")
+                        {
+                            bajaFraude++;
+                        }
+                    }
+                }
+                string mensaje = Mensaje(serActivo, "SER-ACTIVO") + Mensaje(susDueda, "SUS-DEUDA") + Mensaje(susAPC, "SUS-APC") + Mensaje(bajaAPC, "BAJA-APC") + Mensaje(bajaFraude, "BAJA-FRAUDE");
+                return Ok(new { flag = 1, mensaje = mensaje });
+            }
+        }
+
+        [NonAction]
+        public string Mensaje(int cant, string mensaje)
+        {
+            if (cant == 0)
+            {
+                return "";
+            }
+            else
+            {
+                return cant + " " + mensaje + ",";
+            }
         }
 
     }

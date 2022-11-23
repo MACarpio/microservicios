@@ -16,10 +16,7 @@ builder.Services.AddEntityFrameworkMySQL().AddDbContext<DbWinforce>(options =>
 {
     options.UseMySQL(DbWinforce);
 });
-builder.Services.AddEntityFrameworkMySQL().AddDbContext<DbCRM>(options =>
-{
-    options.UseMySQL(DbCRMexp);
-});
+
 builder.Services.AddEntityFrameworkMySQL().AddDbContext<DbMiPortalWin>(options =>
 {
     options.UseMySQL(DbMiPortalWin);

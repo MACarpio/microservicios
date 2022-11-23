@@ -37,13 +37,4 @@ namespace ms.Models.VFmid
         public int? DIRI_COD_ECOM { get; set; }
         public long? DIRI_COD_COBERTURA { get; set; }
     }
-    public partial class ModelCrmDireccion
-    {
-        public string TIPO_VIA { get; set; } = null!;
-        public string DESCRIPCION_VIA { get; set; } = null!;
-        public string DESCRIPCION_NUMERACION { get; set; } = null!;
-        public string MANZANA { get; set; } = null!;
-        public string LOTE { get; set; } = null!;
-
-    }
 }

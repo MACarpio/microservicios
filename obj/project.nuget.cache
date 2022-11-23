@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tBPVFY3ttKB8/k6HrFaniELC1jlMwIARxz6yNOJSivNqgRLuxg5jAsLKhGqs7DL5ywwX6S5Crir+wzUPfaa1tg==",
+  "dgSpecHash": "jlMg1amHF6ZIeLrCaedbfGNfPFB4U4Ok2ygM8/PIbaXeDH3wiG6ULjtsn5ozWDcBX1rqWpFgYhrUFLGssPSvxg==",
   "success": true,
-  "projectFilePath": "E:\\VFConsulting\\ms\\ms.csproj",
+  "projectFilePath": "e:\\VFConsulting\\ms\\ms.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mpaca\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
     "C:\\Users\\mpaca\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

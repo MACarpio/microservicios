@@ -94,7 +94,7 @@ namespace ms.Controllers.VFmid
                 updated_at = DateTime.Now,
                 created_at = DateTime.Now
             };
-            _contextVFmid.tp_busquedas.Add(busqueda);
+            _contextVFmid.tp_i_busquedas.Add(busqueda);
             _contextVFmid.SaveChanges();
         }
         [NonAction]

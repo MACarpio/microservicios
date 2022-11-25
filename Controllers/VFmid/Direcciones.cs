@@ -10,10 +10,12 @@ namespace ms.Controllers.VFmid
     {
         private readonly DbVFmid _dbmid;
         private readonly DbCRM _dbcrm;
-        public Direcciones(DbVFmid dbmid, DbCRM dbcrm)
+        private readonly DbECOM _dbecom;
+        public Direcciones(DbVFmid dbmid, DbCRM dbcrm, DbECOM dbecom)
         {
             _dbmid = dbmid;
             _dbcrm = dbcrm;
+            _dbecom = dbecom;
         }
 
         [HttpGet("ValidarFlag")]
@@ -30,12 +32,13 @@ namespace ms.Controllers.VFmid
                 int susAPC = 0;
                 int bajaAPC = 0;
                 int bajaFraude = 0;
-                int serActivo = 0;
+                int serActivoDeuda = 0;
                 for (int i = 0; i < cli.Count; i++)
                 {
                     if (cli[i].DOCC_COD_TIPO_ESTADO == "03")
                     {
-                        serActivo++;
+                        var cantidad = _dbecom.Cantidad.FromSqlRaw("SELECT TOP 10 Count(*) as cantidad FROM ECOM.COMPROBANTE C INNER JOIN ECOM.ECOM_EMPRESA_CLIENTE ECL ON C.EMCI_ID_EMP_CLI = ECL.EMCI_ID_EMP_CLI INNER JOIN ECOM.ECOM_CLIENTE CL ON ECL.CLII_ID_CLIENTE = CL.CLII_ID_CLIENTE WHERE COMC_COD_EMPRESA = 15 AND CL.CLIV_NRO_RUC = {0} AND C.ESTI_ID_ESTADO = 7 AND C.COMC_FEC_VENCIMIENTO < GETDATE() ORDER BY 1 DESC", cli[i].CLIV_NUMERO_DOCUMENTO).FirstOrDefault();
+                        serActivoDeuda = serActivoDeuda + cantidad.cantidad;
                     }
                     if (cli[i].DOCC_COD_TIPO_ESTADO == "07" || cli[i].DOCC_COD_TIPO_ESTADO == "06")
                     {
@@ -59,7 +62,7 @@ namespace ms.Controllers.VFmid
                         }
                     }
                 }
-                string mensaje = Mensaje(serActivo, "SER-ACTIVO") + Mensaje(susDueda, "SUS-DEUDA") + Mensaje(susAPC, "SUS-APC") + Mensaje(bajaAPC, "BAJA-APC") + Mensaje(bajaFraude, "BAJA-FRAUDE");
+                string mensaje = Mensaje(serActivoDeuda, "SER-ACTIVO-DEUDA") + Mensaje(susDueda, "SUS-DEUDA") + Mensaje(susAPC, "SUS-APC") + Mensaje(bajaAPC, "BAJA-APC") + Mensaje(bajaFraude, "BAJA-FRAUDE");
                 return Ok(new { flag = 1, mensaje = mensaje });
             }
         }

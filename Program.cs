@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ms.Context.MySql;
 using ms.Context.SqlServer;
+using ms.Repository;
+using ms.Services;
 using MySql.EntityFrameworkCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,7 @@ var DbVFmid = builder.Configuration.GetConnectionString("VFmid");
 var DbCRMSqlServer = builder.Configuration.GetConnectionString("CRMSqlServer");
 var DbWinforce = builder.Configuration.GetConnectionString("Winforce");
 var DbMiPortalWin = builder.Configuration.GetConnectionString("MiPortalWin");
+var DbECOMSqlServer = builder.Configuration.GetConnectionString("ECOMSqlServer");
 
 builder.Services.AddEntityFrameworkMySQL().AddDbContext<DbWinforce>(options =>
 {
@@ -27,6 +30,9 @@ builder.Services.AddDbContext<DbVFmid>(
 builder.Services.AddDbContext<DbCRM>(
     options => options.UseSqlServer(DbCRMSqlServer)
 ); ;
+builder.Services.AddDbContext<DbECOM>(
+    options => options.UseSqlServer(DbECOMSqlServer)
+); ;
 
 // Add services to the container.
 
@@ -34,6 +40,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IAzureStorage, AzureStorage>();
 
 var app = builder.Build();
 app.UseSwagger();
